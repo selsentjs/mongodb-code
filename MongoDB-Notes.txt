@@ -1,4 +1,5 @@
 show databases;
+show collections;
 use shop;
  db.products.insertOne({name:"TV", price:20000,desc:"This is 20inch"});
  db.products.find();
@@ -18,3 +19,54 @@ db.products.insertMany([
 {name:"Mobile", price:10000,desc:"This is mobile", brand:{memory:"3GB",brand:"Samsung",procprocessor:"i7"}},
 {name:"Mobile", price:10000,desc:"This is mobile", brand:{memory:"3GB",brand:"Samsung",processor:"i7"}}
 ]);
+
+
+find single data by id:
+=======================
+ db.products.find({ _id: ObjectId("6442beca9ee2d33878a51484")});
+[
+  {
+    _id: ObjectId("6442beca9ee2d33878a51484"),
+    name: 'Mobile',
+    price: 10000,
+    desc: 'This is mobile',
+    brand: { memory: '3GB', brand: 'Samsung', processor: 'i7' }
+  }
+]
+
+=======================================================================
+
+$gt and $lt:
+=============
+ db.products.find({price: {$gt:10000, $lt:30000}});
+[
+  {
+    _id: ObjectId("6442bcb89ee2d33878a51482"),
+    name: 'TV',
+    price: 20000,
+    desc: 'This is 20inch'
+  }
+]
+===============================================================================
+
+find the data from nested query:
+===================================
+db.products.find({'brand.memory':'3GB'});
+[
+  {
+    _id: ObjectId("6442beca9ee2d33878a51483"),
+    name: 'Mobile',
+    price: 10000,
+    desc: 'This is mobile',
+    brand: { memory: '3GB', brand: 'Samsung', procprocessor: 'i7' }
+  },
+  {
+    _id: ObjectId("6442beca9ee2d33878a51484"),
+    name: 'Mobile',
+    price: 10000,
+    desc: 'This is mobile',
+    brand: { memory: '3GB', brand: 'Samsung', processor: 'i7' }
+  }
+]
+
+==================================================================================
