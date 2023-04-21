@@ -1,0 +1,20 @@
+show databases;
+use shop;
+ db.products.insertOne({name:"TV", price:20000,desc:"This is 20inch"});
+ db.products.find();
+ ===================
+[
+  {
+    _id: ObjectId("6442bcb89ee2d33878a51482"),
+    name: 'TV',
+    price: 20000,
+    desc: 'This is 20inch'
+  }
+]
+
+insertMany:
+============
+db.products.insertMany([
+{name:"Mobile", price:10000,desc:"This is mobile", brand:{memory:"3GB",brand:"Samsung",procprocessor:"i7"}},
+{name:"Mobile", price:10000,desc:"This is mobile", brand:{memory:"3GB",brand:"Samsung",processor:"i7"}}
+]);
