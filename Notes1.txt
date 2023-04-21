@@ -1,0 +1,17 @@
+forEach(), toArray(), sort():
+===========================
+db.products.find().forEach(data => {print(data)});
+
+db.products.find().toArray();
+sort:
+=======
+db.products.find().sort({name:1});
+========================================================================
+projection:
+============
+print all the products name only:
+=================================
+db.products.find({},{_id:0, name:1});
+[ { name: 'TV' }, { name: 'Washing Machine' }, { name: 'Grinder' } ]
+
+==============================================================================

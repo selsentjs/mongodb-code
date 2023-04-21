@@ -70,3 +70,16 @@ db.products.find({'brand.memory':'3GB'});
 ]
 
 ==================================================================================
+update the data:
+==================
+ db.products.updateOne({name:"Washing MAchine"}, {$set:{name:"Washing Machine"}})
+====================================================================================
+
+delete the data:
+==================
+db.products.deleteOne({name:"Mobile"});
+
+====================================================================================
+sort:
+=======
+db.products.find().sort({name:1});
