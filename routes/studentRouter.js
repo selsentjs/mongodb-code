@@ -7,15 +7,17 @@ const {
     createStudent,
     updateStudent,
     deleteStudent,
-    studentAndteacher
+    getnameWithParent,
+    getNameWithMarks
 } = require('../controllers/studentController');
 
-router.route('/').get(getAllStudents);
-router.route('/:id').get(getSingleStudent);
-router.route('/').post(createStudent);
-router.route('/:id').put(updateStudent);
-router.route('/:id').delete(deleteStudent);
-
+router.get('/', getAllStudents);
+router.get('/name-with-parent', getnameWithParent);
+router.get('/name-with-marks', getNameWithMarks)
+router.get('/:id',getSingleStudent);
+router.post('/', createStudent);
+router.put('/:id', updateStudent);
+router.delete('/:id', deleteStudent);
 
 
 

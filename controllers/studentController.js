@@ -58,6 +58,56 @@ const deleteStudent = async(req,res) => {
     }
 }
 
+// display student name with parent details
+const getnameWithParent = async(req,res) => {
+    try{
+        const nameWithParent = await Student.aggregate([
+            {
+                $project: {_id:0, student_name:1, parent:1}
+            }
+        ])
+        console.log("nameWithParent:", nameWithParent);
+        return res.send({nameWithParent})
+    }
+    catch (err) {
+        console.log(err)
+    }
+    
+}
+
+// student name with mark details (connect students and marks table)
+
+const getNameWithMarks = async(req,res) => {
+    try{
+        const nameWithMarks = await Student.aggregate([
+       
+            {
+                $lookup: {
+                 from: "marks",
+                 localField: "_id",
+                 foreignField: "student_id",
+                 as:"Mark"
+                }
+            },
+                {
+               
+                    $project: {student_name: 1,
+                        stream: 1,
+                        "Mark.name_of_test": 1,
+                        "Mark.subject": 1}
+                }
+            
+               
+            ])
+            return res.send(nameWithMarks)
+    
+    }
+    catch(err) {
+        console.log(err)
+    }
+
+
+}
 
 
 module.exports = {
@@ -66,5 +116,7 @@ module.exports = {
     createStudent,
     updateStudent,
     deleteStudent,
+    getnameWithParent,
+    getNameWithMarks
    
 }
