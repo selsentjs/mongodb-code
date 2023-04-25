@@ -1,11 +1,14 @@
-forEach(), toArray(), sort():
-===========================
+forEach(), toArray(), sort(),skip(),limit():
+====================================
 db.products.find().forEach(data => {print(data)});
 
 db.products.find().toArray();
 sort:
 =======
 db.products.find().sort({name:1});
+db.products.find().skip(1);
+db.products.find().limit(1);
+
 ========================================================================
 projection:
 ============
@@ -15,3 +18,110 @@ db.products.find({},{_id:0, name:1});
 [ { name: 'TV' }, { name: 'Washing Machine' }, { name: 'Grinder' } ]
 
 ==============================================================================
+// $ed => equal operator
+db.employee.find({name:{$eq:"Ajantha"}})
+// $ne => not equal
+db.employee.find({name:{$ne:"Ajantha"}})    
+// $gt => greater than
+db.employee.find({"details.salary":{$gt:40000}})
+// $in => value is matched within an array $in:[ ]  => array so [ ]
+db.employee.find({"details.position":{$in:["HR","Frontend Developer"]}})
+
+// $and => returns documents where both queries match
+db.employee.find({$and: [{name:{$eq:"Ajantha"}},{"details.position":{$eq:"HR"}}]})
+
+// $or
+db.employee.find({$or: [{name:{$eq:"Ajantha"}},{"details.position":{$eq:"Frontend Developer"}}]})
+// regex = name start with A
+db.employee.find({name:{$regex:"^A"}})
+
+// regex = name start with A or a => i means ignore
+db.employee.find({name:{$regex:"^a",$options:"i"}})
+// $where => Allows to use JavaScript expressions
+db.employee.find({$where: function() {return this.name=="Kujis"}})
+
+// $text => performs a text search on the content
+=========================================================================================================
+use pizza;  // database name-pizza
+
+// insert data with date
+
+db.order.insertMany([
+ {name:"Pizza", size:"small", price:12, quantity:5, date: new Date()},
+{name: "Vegan", size: "medium", price: 18, quantity: 10, date :new Date()}
+ ]);
+ 
+
+Print size=’small’ and quantity=10
+
+To count the items:
+================
+
+db.order.aggregate( [
+ {
+   $group: {
+      _id: null,
+      count: { $count: { } }
+   }
+ }
+] )
+
+
+
+db.order.aggregate([
+     {
+     $match: {size:'small', quantity:10}
+     },
+    // find the sum of quantity from small size pizza
+    {
+      $group:{_id: "$name", totalQuantity: {$sum:"$quantity"}}  
+         
+     }
+     
+     ]);
+
+Output:
+======
+{
+	"_id" : "Vegan",
+	"totalQuantity" : 10
+},
+
+{
+	"_id" : "Pepperoni",
+	"totalQuantity" : 10
+}
+
+===========================================================================
+Aggregation:
+=============
+db.products.aggregate([ {$match:{'details.memory':"5GB",price:25000}}]);
+
+
+Aggregation:
+===========
+https://www.mongodb.com/docs/manual/core/aggregation-pipeline/
+
+https://www.tutorialspoint.com/mongodb/mongodb_aggregation.htm
+
+https://www.digitalocean.com/community/tutorials/how-to-use-aggregations-in-mongodb
+
+unwind:
+=========
+db.clothing.aggregate( [ { $unwind: { path: "$sizes" } } ] )
+or
+db.clothing.aggregate( [ { $unwind: "$sizes" } ] )
+
+
+
+========================================================================
+// Stage 1: Filter pizza order documents by date range
+
+db.order.aggregate([
+     {
+     $match: {"date": { $gte: new ISODate( "2020-01-30" ), $lt: new ISODate(              "2021-01-30" ) }}
+
+     }
+    
+    ]);
+============================================================================

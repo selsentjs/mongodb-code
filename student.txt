@@ -1,0 +1,83 @@
+           
+            "_id": "644532e3e0b451069d1a85dd",
+            "student_name": "Ajay",
+           
+              
+            "_id": "64453346e0b451069d1a85df",
+            "student_name": "Abhirami",
+               
+            "_id": "644533a2e0b451069d1a85e2",
+            "student_name": "Kalyani",
+           
+            "_id": "644533e7e0b451069d1a85e4",
+            "student_name": "Deepa",
+      
+            "_id": "64453423e0b451069d1a85e6",
+            "student_name": "Ganesh",
+           
+               
+            "_id": "6445343be0b451069d1a85e8",
+            "student_name": "Prabhu",
+==========================================================================
+ Sudent
+
+{
+   "_id" : ObjectId("584aac38686860d502929b8b"),
+   "name" : "John"
+}
+Teacher
+
+{
+   "_id" : ObjectId("584aaca6686860d502929b8d"),
+   "role" : "Admin",
+   "userId" : "584aac38686860d502929b8b"  
+}
+============================================================================
+db.teachers.aggregate({
+  "$lookup": {
+    "from": "students",
+    "localField": "student_id",
+    "foreignField": "_id",
+    "as": "output"
+  }
+})
+
+School.teachers.aggregate([
+  {
+    "$project": {
+      "_id": {
+        "$toString": "$_id"
+      }
+    }
+  },
+  {
+    "$lookup": {
+      "from": "students",
+      "localField": "_id",
+      "foreignField": "student_id",
+      "as": "students"
+    }
+  }
+])
+================================================================================
+db.Teacher.aggregate([
+{
+"$project":{
+	"_id": {
+"$toString":"$_id"
+}
+}
+},
+{
+"$lookup": {
+"from": "Student",
+"localField": "_id",
+"foreignField": "student_id",
+"as": "student"
+
+}
+
+}
+])
+
+Cast to ObjectId failed for value (type string) at path _id 
